@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Stackmint::VERSION
   spec.authors       = ["Cristian Pereyra"]
   spec.email         = ["cristian@redmintlabs.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{Redmint's application utility belt}
+  spec.summary       = %q{Set of helpers, capistrano tasks, and other day to day useful commands}
   spec.homepage      = ""
   spec.license       = "MIT"
 
