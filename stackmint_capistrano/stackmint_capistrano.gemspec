@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["cristian@redmintlabs.com"]
   spec.description   = %q{Redmint's application utility belt}
   spec.summary       = %q{Set of helpers, capistrano tasks, and other day to day useful commands}
-  spec.homepage      = ""
+  spec.homepage      = "http://stackmint.redmintlabs.com"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files stackmint_capistrano`.split($/)
