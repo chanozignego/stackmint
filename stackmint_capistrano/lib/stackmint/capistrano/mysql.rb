@@ -11,7 +11,7 @@ configuration.load do
   _cset(:db_backup_path) { abort "[Error] mysql recipes need `db_backup_path` to execute backups." }
 
   DB_FILE_PATH ||= "#{config_path}/database.yml"
-  DBCONFIG ||= YAML.load_file(DB_FILE_PATH)
+  DBCONFIG ||= (YAML.load_file(DB_FILE_PATH) rescue {})
 
   _cset(:mysql_host) { DBCONFIG['production']['host'] }
   _cset(:mysql_user) { DBCONFIG['production']['username'] }
