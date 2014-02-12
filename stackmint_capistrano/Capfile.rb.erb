@@ -7,13 +7,13 @@ set :config_path, File.expand_path(File.dirname(__FILE__), 'config')
 set :db_backup_path, '/var/backups/db'
 
 # load the recipes
-require 'capistrano-zen/utils'
-require 'capistrano-zen/nginx'
-require 'capistrano-zen/nodejs'
-require 'capistrano-zen/postgresql'
-require 'capistrano-zen/rbenv'
-require 'capistrano-zen/unicorn'
-require 'capistrano-zen/config'
+require 'stackmint/capistrano/utils'
+require 'stackmint/capistrano/nginx'
+require 'stackmint/capistrano/nodejs'
+require 'stackmint/capistrano/postgresql'
+require 'stackmint/capistrano/rbenv'
+require 'stackmint/capistrano/unicorn'
+require 'stackmint/capistrano/config'
 
 # Use Git as Version Control System
 set :scm, :git
