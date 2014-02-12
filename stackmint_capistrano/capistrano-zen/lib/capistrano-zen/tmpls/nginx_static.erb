@@ -1,0 +1,12 @@
+server {
+  listen 80;
+  server_name <%= domain %>;
+
+  root <%= deploy_to %>;
+  gzip_static on;
+
+  access_log  /var/log/nginx/<%= application %>-access.log;
+  error_log  /var/log/nginx/<%= application %>-error.log;
+
+  error_page  500 502 503 504 /500.html;
+}

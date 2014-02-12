@@ -1,15 +1,9 @@
 source 'https://rubygems.org'
 
+# Specify your gem's dependencies in capistrano-zen.gemspec
 gemspec
-gem 'recap'
 
 group :development do
-  gem 'capistrano', '2.15.5'
   gem 'rake', '~> 10.0'
   gem 'bump'
-end
-
-group :test do
-  gem 'rspec'
-  gem 'capistrano-spec'
 end

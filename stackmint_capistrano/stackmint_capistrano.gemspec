@@ -9,10 +9,9 @@ Gem::Specification.new do |spec|
   spec.version       = Stackmint::Capistrano::VERSION
   spec.authors       = ["Cristian Pereyra"]
   spec.email         = ["cristian@redmintlabs.com"]
-  spec.description   = %q{Redmint's application utility belt}
-  spec.summary       = %q{Set of helpers, capistrano tasks, and other day to day useful commands}
+  spec.description   = %q{Redmint's application utility belt, capistrano module}
+  spec.summary       = %q{Set of capistrano tasks for working with our development stack}
   spec.homepage      = "http://stackmint.redmintlabs.com"
-  spec.license       = "MIT"
 
   spec.files         = `git ls-files stackmint_capistrano`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
