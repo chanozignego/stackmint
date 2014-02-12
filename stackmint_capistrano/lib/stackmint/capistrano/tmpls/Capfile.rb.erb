@@ -1,0 +1,67 @@
+### SECTION :basic_requires
+require 'recap/recipes/rails'
+
+### SECTION :default_paths
+set :config_path, File.expand_path(File.dirname(__FILE__), 'config')
+set :db_backup_path, '/var/backups/db'
+
+### SECTION :install_recipes
+require 'stackmint/capistrano/utils'
+require 'stackmint/capistrano/nginx'
+require 'stackmint/capistrano/nodejs'
+<% if @database == :postgres %>
+require 'stackmint/capistrano/postgresql'
+<% else %>
+require 'stackmint/capistrano/mysql'
+<% end %>
+
+### SECTION :scm
+# Use Git as Version Control System
+set :repository, "{{ YOUR_REPO }}"
+set :branch, 'master'
+
+### SECTION :ssh_config
+default_run_options[:pty]   = true
+ssh_options[:forward_agent] = true
+
+### SECTION :app_config
+set :application_name, "{{ YOUR_APP }}"
+set :domain, "{{ YOUR_DOMAIN }}"
+server domain, :web, :app, :db, :primary => true
+
+### SECTION :server_config
+set :user, ENV["DEPLOY_USER"] || 'redmint'
+set :group, 'deploy'
+set :deploy_to, "/home/#{user}/#{application}"
+
+### SECTION :bootstrap_callbacks
+after "bootstrap:install"
+  "nginx:install",
+  "nodejs:install",
+  "dev_lib:install",
+  <% if @database == :postgres %>
+  "pg:install"
+  <% else %>
+  "mysql:install"
+  <% end %>
+
+### SECTION :initial_setup_callbacks
+after "deploy:setup",
+  "nginx:setup",
+  <% if @database == :postgres %>
+  "pg:setup",
+  "pg:init"
+  <% else %>
+  "mysql:setup",
+  "mysql:init"
+  <% end %>
+
+### SECTION :staging_task
+task :staging do
+  set :application, "#{application_name}_staging"
+end
+
+### SECTION :staging_task
+task :production do
+  set :application, application_name
+end
