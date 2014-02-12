@@ -4,6 +4,10 @@ def _cset(name, *args, &block)
   end
 end
 
+def run_as_user user, query
+  run "sudo su #{user} bash -l -c #{query.inspect}" 
+end
+
 def template(from, to)
   erb = File.read(File.expand_path("../tmpls/#{from}", __FILE__))
   upload StringIO.new(ERB.new(erb).result(binding)), to

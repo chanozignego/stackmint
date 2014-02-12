@@ -1,4 +1,4 @@
-require 'capistrano-zen/base'
+require 'stackmint/capistrano/base'
 require 'yaml'
 
 configuration = Capistrano::Configuration.respond_to?(:instance) ?

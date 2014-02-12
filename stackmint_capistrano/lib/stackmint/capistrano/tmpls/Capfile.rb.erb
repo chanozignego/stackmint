@@ -9,6 +9,10 @@ set :db_backup_path, '/var/backups/db'
 require 'stackmint/capistrano/utils'
 require 'stackmint/capistrano/nginx'
 require 'stackmint/capistrano/nodejs'
+require 'stackmint/capistrano/rvm'
+require 'stackmint/capistrano/bundler'
+require 'stackmint/capistrano/git'
+require 'stackmint/capistrano/recap'
 <% if @database == :postgres %>
 require 'stackmint/capistrano/postgresql'
 <% else %>
@@ -21,8 +25,11 @@ set :repository, "{{ YOUR_REPO }}"
 set :branch, 'master'
 
 ### SECTION :ssh_config
-default_run_options[:pty]   = true
-ssh_options[:forward_agent] = true
+default_run_options[:pty]              = true
+default_run_options[:shell]            = '/bin/bash'
+ssh_options[:forward_agent]            = true
+ssh_options[:port]                     = 22
+
 
 ### SECTION :app_config
 set :application_name, "{{ YOUR_APP }}"
@@ -36,8 +43,11 @@ set :group, 'deploy'
 set :deploy_to, "/home/#{user}/#{application}"
 
 ### SECTION :bootstrap_callbacks
-after "bootstrap:install",
+after "host:install",
   "nginx:install",
+  "rvm:install",
+  "rvm:install_ruby",
+  "bundler:install",
   "nodejs:install",
   "dev_lib:install",<% if @database == :postgres %>
   "pg:install"
@@ -47,6 +57,7 @@ after "bootstrap:install",
 
 ### SECTION :initial_setup_callbacks
 after "deploy:setup",
+  "git_config:setup",
   "nginx:setup",
   <% if @database == :postgres %>"pg:setup",
   "pg:init"

@@ -5,11 +5,10 @@ configuration = Capistrano::Configuration.respond_to?(:instance) ?
   Capistrano.configuration(:must_exist)
 
 configuration.load do
-  namespace :dev_lib do
-    task :install do
-      run "#{sudo} apt-get -y install libxslt-dev libxml2-dev"
-      run "#{sudo} apt-get -y install imagemagick"
-      run "#{sudo} apt-get -y install libsqlite3-dev"
+  namespace :bundler do
+    desc "Install the latest ruby patch with rvm"
+    task :install, roles: :app do
+      run "#{sudo} gem install bundler"
     end
   end
 end

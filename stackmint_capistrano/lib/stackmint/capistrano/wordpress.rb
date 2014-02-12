@@ -1,5 +1,5 @@
 require 'securerandom'
-require 'capistrano-zen/base'
+require 'stackmint/capistrano/base'
 
 configuration = Capistrano::Configuration.respond_to?(:instance) ?
   Capistrano::Configuration.instance(:must_exist) :
