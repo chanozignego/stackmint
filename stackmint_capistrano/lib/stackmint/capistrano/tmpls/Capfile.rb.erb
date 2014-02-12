@@ -26,6 +26,7 @@ ssh_options[:forward_agent] = true
 
 ### SECTION :app_config
 set :application_name, "{{ YOUR_APP }}"
+set :application,      "{{ YOUR_APP }}"
 set :domain, "{{ YOUR_DOMAIN }}"
 server domain, :web, :app, :db, :primary => true
 
@@ -35,11 +36,10 @@ set :group, 'deploy'
 set :deploy_to, "/home/#{user}/#{application}"
 
 ### SECTION :bootstrap_callbacks
-after "bootstrap:install"
+after "bootstrap:install",
   "nginx:install",
   "nodejs:install",
-  "dev_lib:install",
-  <% if @database == :postgres %>
+  "dev_lib:install",<% if @database == :postgres %>
   "pg:install"
   <% else %>
   "mysql:install"
@@ -48,11 +48,9 @@ after "bootstrap:install"
 ### SECTION :initial_setup_callbacks
 after "deploy:setup",
   "nginx:setup",
-  <% if @database == :postgres %>
-  "pg:setup",
+  <% if @database == :postgres %>"pg:setup",
   "pg:init"
-  <% else %>
-  "mysql:setup",
+  <% else %>"mysql:setup",
   "mysql:init"
   <% end %>
 

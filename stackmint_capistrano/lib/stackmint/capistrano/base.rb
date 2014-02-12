@@ -5,11 +5,11 @@ configuration = Capistrano::Configuration.respond_to?(:instance) ?
   Capistrano.configuration(:must_exist)
 
 configuration.load do
-  namespace :bootstrap do
+  namespace :host do
     desc "Install everything onto the server"
     task :install do
       run "#{sudo} apt-get -y update"
-      run "#{sudo} apt-get -y install python-software-properties"
+      run "#{sudo} apt-get -y install python-software-properties git-core vim"
     end
   end
 end
