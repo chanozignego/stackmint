@@ -14,6 +14,7 @@ require 'stackmint/capistrano/rvm'
 require 'stackmint/capistrano/git'
 require 'stackmint/capistrano/bundler'
 require 'stackmint/capistrano/nodejs'
+require 'stackmint/capistrano/redis'
 <% if @database == :postgres %>require 'stackmint/capistrano/postgresql'
 <% else %>require 'stackmint/capistrano/mysql'<% end %>
 
@@ -45,6 +46,7 @@ after "host:install",
   "rvm:install_ruby",
   "bundler:install",
   "nodejs:install",
+  "redis:install",
   "dev_lib:install",
   "rvm:add_user_to_rvm",
   "git_config:setup",<% if @database == :postgres %>
