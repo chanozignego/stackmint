@@ -7,9 +7,7 @@ configuration = Capistrano::Configuration.respond_to?(:instance) ?
 configuration.load do
   namespace :dev_lib do
     task :install do
-      run "#{sudo} apt-get -y install libxslt-dev libxml2-dev"
-      run "#{sudo} apt-get -y install imagemagick"
-      run "#{sudo} apt-get -y install libsqlite3-dev"
+      run "#{sudo} apt-get -y install libxslt-dev libxml2-dev imagemagick libsqlite3-dev freetds"
     end
   end
 end
