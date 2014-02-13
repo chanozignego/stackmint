@@ -8,7 +8,7 @@ configuration.load do
   namespace :bundler do
     desc "Install the latest ruby patch with rvm"
     task :install, roles: :app do
-      run "#{sudo} gem install bundler"
+      run_as_user "root", "gem install bundler"
     end
   end
 end

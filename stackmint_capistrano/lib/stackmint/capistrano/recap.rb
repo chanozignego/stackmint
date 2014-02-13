@@ -8,10 +8,10 @@ configuration.load do
   namespace :recap do
     desc "Install the latest ruby patch with rvm"
     task :set_env, roles: :app do
-      run "#{sudo} touch /home/#{application}/.env"
-      run "#{sudo} chown #{user}:#{user} /home/#{application}/.env"
-      run "#{sudo} echo PATH=\$PATH:$PATH >> /home/#{application}/.env"
-      run "#{sudo} chown #{application}:#{application} /home/#{application}/.env"
+      run_as_user "root", "touch /home/#{application}/.env"
+      run_as_user "root", "chown #{user}:#{user} /home/#{application}/.env"
+      run_as_user user, "rvm gemset use global && (env | grep \"^PATH\" >> /home/#{application}/.env)"
+      run_as_user "root", "chown #{application}:#{application} /home/#{application}/.env"
     end
   end
 
