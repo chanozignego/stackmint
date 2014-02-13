@@ -58,7 +58,7 @@ after "bootstrap",
 
 ### SECTION :initial_setup_callbacks
 after "deploy:setup",
-  "nginx:setup",
+  "nginx:setup:puma",
   <% if @database == :postgres %>"pg:setup",
   "pg:init"
   <% else %>"mysql:setup",
@@ -70,16 +70,18 @@ task :local do
   set :user, 'vagrant'
   set :application, "#{application_name}"
   set :domain, "localhost:2222"
+  server domain, :web, :app, :db, :primary => true
 end
 
 ### SECTION :staging_task
 task :staging do
   set :application, "#{application_name}_staging"
+  server domain, :web, :app, :db, :primary => true
 end
 
 ### SECTION :staging_task
 task :production do
   set :application, application_name
+  server domain, :web, :app, :db, :primary => true
 end
 
-server domain, :web, :app, :db, :primary => true

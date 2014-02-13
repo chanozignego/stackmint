@@ -25,11 +25,10 @@ configuration.load do
 
       desc "Setup nginx configuration for puma application"
       task :puma, roles: :web do
-        raise "Not Implemented Yet!"
-        # template "nginx_unicorn.erb", "/tmp/nginx_conf"
-        # run "#{sudo} mv /tmp/nginx_conf /etc/nginx/sites-available/#{application}"
-        # link
-        # restart
+        template "nginx_puma.erb", "/tmp/nginx_conf"
+        run "#{sudo} mv /tmp/nginx_conf /etc/nginx/sites-available/#{application}"
+        link
+        restart
       end
 
       desc "Setup nginx configuration for static website"
