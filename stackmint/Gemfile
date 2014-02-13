@@ -1,3 +1,4 @@
 source 'https://rubygems.org'
 
-gemspec path: "stackmint/"
+gemspec 
+gemspec path: "../stackmint_capistrano"
