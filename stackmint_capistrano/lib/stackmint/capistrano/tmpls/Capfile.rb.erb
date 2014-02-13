@@ -6,18 +6,16 @@ set :config_path, File.expand_path(File.dirname(__FILE__), 'config')
 set :db_backup_path, '/var/backups/db'
 
 ### SECTION :install_recipes
+require 'stackmint/capistrano/base'
 require 'stackmint/capistrano/utils'
 require 'stackmint/capistrano/nginx'
-require 'stackmint/capistrano/nodejs'
-require 'stackmint/capistrano/rvm'
-require 'stackmint/capistrano/bundler'
-require 'stackmint/capistrano/git'
 require 'stackmint/capistrano/recap'
-<% if @database == :postgres %>
-require 'stackmint/capistrano/postgresql'
-<% else %>
-require 'stackmint/capistrano/mysql'
-<% end %>
+require 'stackmint/capistrano/rvm'
+require 'stackmint/capistrano/git'
+require 'stackmint/capistrano/bundler'
+require 'stackmint/capistrano/nodejs'
+<% if @database == :postgres %>require 'stackmint/capistrano/postgresql'
+<% else %>require 'stackmint/capistrano/mysql'<% end %>
 
 ### SECTION :scm
 # Use Git as Version Control System
@@ -26,7 +24,6 @@ set :branch, 'master'
 
 ### SECTION :ssh_config
 default_run_options[:pty]              = true
-default_run_options[:shell]            = '/bin/bash'
 ssh_options[:forward_agent]            = true
 ssh_options[:port]                     = 22
 
@@ -35,12 +32,11 @@ ssh_options[:port]                     = 22
 set :application_name, "{{ YOUR_APP }}"
 set :application,      "{{ YOUR_APP }}"
 set :domain, "{{ YOUR_DOMAIN }}"
-server domain, :web, :app, :db, :primary => true
 
 ### SECTION :server_config
 set :user, ENV["DEPLOY_USER"] || 'redmint'
 set :group, 'deploy'
-set :deploy_to, "/home/#{user}/#{application}"
+set :deploy_to, "/home/#{application}/app"
 
 ### SECTION :bootstrap_callbacks
 after "host:install",
@@ -49,21 +45,32 @@ after "host:install",
   "rvm:install_ruby",
   "bundler:install",
   "nodejs:install",
-  "dev_lib:install",<% if @database == :postgres %>
+  "dev_lib:install",
+  "rvm:add_user_to_rvm",
+  "git_config:setup",<% if @database == :postgres %>
   "pg:install"
   <% else %>
   "mysql:install"
-  <% end %>
+<% end %>
+
+after "bootstrap",
+  "rvm:add_app_to_rvm"
 
 ### SECTION :initial_setup_callbacks
 after "deploy:setup",
-  "git_config:setup",
   "nginx:setup",
   <% if @database == :postgres %>"pg:setup",
   "pg:init"
   <% else %>"mysql:setup",
   "mysql:init"
-  <% end %>
+<% end %>
+
+### SECTION :local_task
+task :local do
+  set :user, 'vagrant'
+  set :application, "#{application_name}"
+  set :domain, "localhost:2222"
+end
 
 ### SECTION :staging_task
 task :staging do
@@ -74,3 +81,5 @@ end
 task :production do
   set :application, application_name
 end
+
+server domain, :web, :app, :db, :primary => true
