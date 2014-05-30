@@ -28,10 +28,10 @@ configuration.load do
     task :install, roles: :db, only: {primary: true} do
       # install MySQL interactively
       # http://serverfault.com/questions/19367/scripted-install-of-mysql-on-ubuntu
-      run "#{sudo} debconf-set-selections << 'mysql-server-5.1 mysql-server/root_password password root'"
-      run "#{sudo} debconf-set-selections << 'mysql-server-5.1 mysql-server/root_password_again password root'"
+      run "#{sudo} debconf-set-selections << 'mysql-server mysql-server/root_password password root'"
+      run "#{sudo} debconf-set-selections << 'mysql-server mysql-server/root_password_again password root'"
       run "#{sudo} apt-get -y update"
-      run_as_user "root", "DEBIAN_FRONTEND=noninteractive apt-get -y -q install mysql-server-5.1 libmysqlclient-dev libmysql-ruby"
+      run_as_user "root", "DEBIAN_FRONTEND=noninteractive apt-get -y -q install mysql-server libmysqlclient-dev libmysql-ruby"
     end
 
     desc "Create a database for this application."
