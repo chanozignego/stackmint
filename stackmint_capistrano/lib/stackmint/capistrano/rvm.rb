@@ -10,7 +10,7 @@ configuration.load do
 
     desc "Install the latest ruby patch with rvm"
     task :install, roles: :app do
-      run_as_user "root", "curl -sSL https://get.rvm.io | bash"
+      run_as_user "root", "curl -sSL https://get.rvm.io | bash -s stable"
     end
 
     task :install_ruby, roles: :app do
