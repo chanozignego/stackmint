@@ -27,10 +27,13 @@ set :branch, 'master'
 default_run_options[:pty]              = true
 ssh_options[:forward_agent]            = true
 ssh_options[:port]                     = 22
-set :repository, 'git@gitlab.redmintlabs.com:cpereyra/fleetsys.git'
+
+set :repository, 'git@gitlab.redmintlabs.com:spreadshout.git'
 set :user, 'redmint'
-set :application_name, "fleetsys"
-set :application,      "fleetsys"
+set :application_name, "spreadshout"
+set :application,      "spreadshout"
+set_default_env :PUMA_SOCK_FILE, "puma.#{application}.sock"
+
 
 ### SECTION :server_config
 set :user, ENV["DEPLOY_USER"] || 'redmint'
@@ -90,7 +93,7 @@ namespace :foreman do
 end
 
 
-##### Extras
+##### Extra
 #
 ### New Relic Integration
 # require 'new_relic/recipes'
