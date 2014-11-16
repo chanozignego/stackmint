@@ -1,0 +1,92 @@
+### SECTION :basic_requires
+require 'recap/recipes/rails'
+
+### SECTION :default_paths
+set :config_path, File.expand_path(File.dirname(__FILE__), 'config')
+set :db_backup_path, '/var/backups/db'
+
+### SECTION :install_recipes
+require 'stackmint/capistrano/scm'
+require 'stackmint/capistrano/base'
+require 'stackmint/capistrano/utils'
+require 'stackmint/capistrano/nginx'
+require 'stackmint/capistrano/recap'
+require 'stackmint/capistrano/rvm'
+require 'stackmint/capistrano/git'
+require 'stackmint/capistrano/bundler'
+require 'stackmint/capistrano/redis'
+require 'stackmint/capistrano/nodejs'
+require 'stackmint/capistrano/postgresql'
+
+require 'new_relic/recipes'
+
+### SECTION :scm
+# Use Git as Version Control System
+set :repository, "{{ YOUR_REPO }}"
+set :branch, 'master'
+
+### SECTION :ssh_config
+default_run_options[:pty]              = true
+ssh_options[:forward_agent]            = true
+ssh_options[:port]                     = 22
+set :repository, 'git@gitlab.redmintlabs.com:cpereyra/fleetsys.git'
+set :user, 'redmint'
+set :application_name, "fleetsys"
+set :application,      "fleetsys"
+
+### SECTION :server_config
+set :user, ENV["DEPLOY_USER"] || 'redmint'
+set :group, 'deploy'
+set :deploy_to, "/home/#{application}/app"
+
+### SECTION :install callbacks
+after "host:install",
+  "nginx:install",
+  "rvm:install",
+  "rvm:install_ruby",
+  "bundler:install",
+  "nodejs:install",
+  "dev_lib:install",
+  "rvm:add_user_to_rvm",
+  "git_config:setup",
+  "pg:install"
+
+after "bootstrap",
+  "rvm:add_app_to_rvm"
+
+after "deploy:setup",
+  "nginx:setup:puma"
+
+### SECTION :local_task
+task :local do
+  set :user, 'vagrant'
+  set :application, "#{application_name}"
+  set :domain, "localhost:2222"
+  server domain, :web, :app, :db, :primary => true
+end
+
+task :new_production do
+  set :application, application_name
+  set :domain, "www.comovamireclamo.com"
+  server "#{domain}:19018", :web, :app, :db, :primary => true
+end
+
+namespace :foreman do
+  set(:foreman_concurrency) { "puma=1,sidekiq=1,private_pub=1,redis=1" }
+  set(:foreman_export_command) { "./bin/foreman export #{foreman_export_format} #{foreman_tmp_location} --procfile #{procfile} --app #{application} --user #{application_user} --log #{deploy_to}/log #{foreman_template_option} --concurrency #{foreman_concurrency}" }
+  task :restart, roles: :app do
+    foreman.export
+    run "(#{sudo} kill -s 10 $(ps -C ruby -F | grep #{application} | grep '/puma' | awk {'print $2'})) || #{sudo} service #{application} restart"
+  end
+  task :full_restart, roles: :app do
+    run "#{sudo} service #{application} restart"
+  end
+  task :stop, roles: :app do
+    run "#{sudo} service #{application}-puma stop"
+    run "#{sudo} service #{application}-sidekiq stop"
+  end
+  task :start, roles: :app do
+    run "#{sudo} service #{application}-puma start"
+    run "#{sudo} service #{application}-sidekiq start"
+  end
+end
