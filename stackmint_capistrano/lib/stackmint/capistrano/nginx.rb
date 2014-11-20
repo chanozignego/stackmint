@@ -15,14 +15,6 @@ configuration.load do
     end
 
     namespace :setup do
-      desc "Setup nginx configuration for unicorn application"
-      task :unicorn, roles: :web do
-        template "nginx_unicorn.erb", "/tmp/nginx_conf"
-        run "#{sudo} mv /tmp/nginx_conf /etc/nginx/sites-available/#{application}"
-        link
-        restart
-      end
-
       desc "Setup nginx configuration for puma application"
       task :puma, roles: :web do
         template "nginx_puma.erb", "/tmp/nginx_conf"

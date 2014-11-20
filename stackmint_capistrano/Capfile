@@ -18,8 +18,6 @@ require 'stackmint/capistrano/redis'
 require 'stackmint/capistrano/nodejs'
 require 'stackmint/capistrano/postgresql'
 
-require 'new_relic/recipes'
-
 ### SECTION :scm
 # Use Git as Version Control System
 set :repository, "{{ YOUR_REPO }}"
@@ -29,10 +27,13 @@ set :branch, 'master'
 default_run_options[:pty]              = true
 ssh_options[:forward_agent]            = true
 ssh_options[:port]                     = 22
-set :repository, 'git@gitlab.redmintlabs.com:cpereyra/fleetsys.git'
+
+set :repository, 'git@gitlab.redmintlabs.com:spreadshout.git'
 set :user, 'redmint'
-set :application_name, "fleetsys"
-set :application,      "fleetsys"
+set :application_name, "spreadshout"
+set :application,      "spreadshout"
+set_default_env :PUMA_SOCK_FILE, "puma.#{application}.sock"
+
 
 ### SECTION :server_config
 set :user, ENV["DEPLOY_USER"] || 'redmint'
@@ -90,3 +91,10 @@ namespace :foreman do
     run "#{sudo} service #{application}-sidekiq start"
   end
 end
+
+
+##### Extra
+#
+### New Relic Integration
+# require 'new_relic/recipes'
+# after "deploy", "newrelic:notice_deployment"
