@@ -11,7 +11,8 @@ configuration.load do
   _cset(:db_backup_path) { abort "[Error] posgtresql recipes need `db_backup_path` to execute backups." }
 
   DB_FILE_PATH = "#{config_path}/database.yml"
-  DBCONFIG = (YAML.load_file(DB_FILE_PATH) rescue {})
+  DB_PRE_YAML = ERB.new File.new(DB_FILE_PATH).read
+  DBCONFIG = (YAML.load_file(DB_PRE_YAML) rescue {})
 
   _cset(:psql_host) { DBCONFIG['production']['host']  }
   _cset(:psql_user) { DBCONFIG['production']['username'] }
