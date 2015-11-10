@@ -51,7 +51,7 @@ configuration.load do
         database_vars.call(database_password_string)
         database_vars.call(database_name_string)
       else
-
+        abort "[Error] posgtresql init needs three variables as args: #{database_user_string}, #{database_password_string}, #{database_name_string}"
       end
     end
 
