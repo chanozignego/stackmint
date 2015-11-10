@@ -33,10 +33,26 @@ configuration.load do
 
     desc "Create a database for this application."
     task :init, roles: :db, only: { primary: true } do
-      run %Q{bundle exec rake db:init}
-      # run %Q{sudo su postgres; export DB_NAME=#{ENV["POSTGRES_TEST_DATABASE_USER"]}; export DB_USER=#{erb_result_proc.call(psql_user)}; export USER_PASSWORD=#{psql_password};echo CREATE USER $DB_USER WITH PASSWORD $USER_PASSWORD | psql; echo ALTER USER $DB_USER CREATEDB | psql; echo CREATE DATABASE $DB_NAME OWNER $DB_USER | psql}
-      # run %Q{#{sudo} -u postgres psql -c "CREATE USER #{psql_user} WITH PASSWORD '#{psql_password}'; ALTER USER #{psql_user} CREATEDB;"}
-      # run %Q{#{sudo} -u postgres psql -c "CREATE DATABASE #{psql_database} OWNER #{psql_user};"}
+      database_user_string = "DATABASE_USER"
+      database_password_string = "DATABASE_PASSWORD"
+      database_name_string = "DATABASE_NAME"
+      database_user = ENV[database_user_string]
+      database_password = ENV[database_password_string]
+      database_name = ENV[database_name_string]
+      if database_user && database_password && database_name
+        #User and database creation
+        run %Q{#{sudo} -u postgres psql -c "CREATE USER #{database_user} WITH PASSWORD '#{database_password}'; ALTER USER #{database_user} CREATEDB;"}
+        run %Q{#{sudo} -u postgres psql -c "CREATE DATABASE #{database_name} OWNER #{database_user};"}
+
+        database_vars = Proc.new{|variable| run %Q{cd /home/#{application}; echo #{variable}=#{ENV[variable]} >> .env}}
+
+        #variables set in .env file on /home/app_name
+        database_vars.call(database_user_string)
+        database_vars.call(database_password_string)
+        database_vars.call(database_name_string)
+      else
+
+      end
     end
 
     desc "Reset the database and role for this application."
