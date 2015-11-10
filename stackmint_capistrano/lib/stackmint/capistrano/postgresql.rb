@@ -13,8 +13,6 @@ configuration.load do
   DB_FILE_PATH = "#{config_path}/database.yml"
   DBCONFIG = (YAML.load_file(DB_FILE_PATH) rescue {})
 
-  erb_result_proc = Proc.new{ |key| ERB.new(key).result}
-
   _cset(:psql_host) { DBCONFIG['production']['host']  }
   _cset(:psql_user) { DBCONFIG['production']['username'] }
   _cset(:psql_password) { DBCONFIG['production']['password'] }
