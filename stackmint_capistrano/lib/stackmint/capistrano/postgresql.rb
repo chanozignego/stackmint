@@ -33,7 +33,8 @@ configuration.load do
 
     desc "Create a database for this application."
     task :init, roles: :db, only: { primary: true } do
-      run %Q{sudo su postgres; export DB_NAME=#{ENV["POSTGRES_TEST_DATABASE_USER"]}; export DB_USER=#{erb_result_proc.call(psql_user)}; export USER_PASSWORD=#{psql_password};echo CREATE USER $DB_USER WITH PASSWORD $USER_PASSWORD | psql; echo ALTER USER $DB_USER CREATEDB | psql; echo CREATE DATABASE $DB_NAME OWNER $DB_USER | psql}
+      run %Q{bundle exec rake db:init}
+      # run %Q{sudo su postgres; export DB_NAME=#{ENV["POSTGRES_TEST_DATABASE_USER"]}; export DB_USER=#{erb_result_proc.call(psql_user)}; export USER_PASSWORD=#{psql_password};echo CREATE USER $DB_USER WITH PASSWORD $USER_PASSWORD | psql; echo ALTER USER $DB_USER CREATEDB | psql; echo CREATE DATABASE $DB_NAME OWNER $DB_USER | psql}
       # run %Q{#{sudo} -u postgres psql -c "CREATE USER #{psql_user} WITH PASSWORD '#{psql_password}'; ALTER USER #{psql_user} CREATEDB;"}
       # run %Q{#{sudo} -u postgres psql -c "CREATE DATABASE #{psql_database} OWNER #{psql_user};"}
     end
