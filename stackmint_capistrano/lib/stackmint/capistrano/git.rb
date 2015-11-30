@@ -24,6 +24,7 @@ configuration.load do
       run_as_user user, "touch ~/.ssh/known_hosts"
       add_domain_to_known_hosts("github.com")
       add_domain_to_known_hosts("gitlab.redmintlabs.com")
+      add_domain_to_known_hosts("gitlab.demos.redmintlabs.com")
     end
   end
 end
