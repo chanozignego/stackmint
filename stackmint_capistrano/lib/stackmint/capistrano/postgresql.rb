@@ -124,7 +124,7 @@ configuration.load do
       set :backup, choice.empty? ? backups.last : choice
     end
 
-    task :create_dump do
+    task :create_dump do |t, args|
       options = {}
       
       OptionParser.new(args) do |opts|
