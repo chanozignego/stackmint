@@ -125,33 +125,33 @@ configuration.load do
     end
 
     task :create_dump do |t, args|
-      options = {}
+      # options = {}
       
-      OptionParser.new(args) do |opts|
-        opts.on("-d", "Database name", String) do |db|
-          options[:db] = db
-        end
-        opts.on("-s", "Server", String) do |server|
-          options[:server] = server
-        end
-      end.parse!
+      # OptionParser.new(args) do |opts|
+      #   opts.on("-d", "Database name", String) do |db|
+      #     options[:db] = db
+      #   end
+      #   opts.on("-s", "Server", String) do |server|
+      #     options[:server] = server
+      #   end
+      # end.parse!
 
-      db = options[:db]
-      server = options[:server]
+      # db = options[:db]
+      # server = options[:server]
 
-      if db.present? && server.present?
-        date_format = Date.today.strftime("%d-%m-%Y")
-        dump_path = "/tmp/#{db}_#{date_format}.sql"
-        puts "Creating dump at: #{dump_path}..."
-        run_as_user "postgres", "pg_dump #{db} > #{dump_path}"
-        puts "Dump created!"
-        puts "Downloading dump to current directory..."
-        run_locally "scp #{server}:#{dump_path} ./"
-        puts "Downloading completed!"
-      else
-        puts "Aborting..."
-        puts "You have to set \'db\' and \'server\' variables"
-      end
+      # if db.present? && server.present?
+      #   date_format = Date.today.strftime("%d-%m-%Y")
+      #   dump_path = "/tmp/#{db}_#{date_format}.sql"
+      #   puts "Creating dump at: #{dump_path}..."
+      #   run_as_user "postgres", "pg_dump #{db} > #{dump_path}"
+      #   puts "Dump created!"
+      #   puts "Downloading dump to current directory..."
+      #   run_locally "scp #{server}:#{dump_path} ./"
+      #   puts "Downloading completed!"
+      # else
+      #   puts "Aborting..."
+      #   puts "You have to set \'db\' and \'server\' variables"
+      # end
     end
   end
 end
