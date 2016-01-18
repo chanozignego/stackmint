@@ -124,20 +124,21 @@ configuration.load do
       set :backup, choice.empty? ? backups.last : choice
     end
 
-    task :create_dump do |t, args|
-      options = {}
+    task :create_dump, :db, :server do |t, args|
+      # options = {}
       
-      OptionParser.new(args) do |opts|
-        opts.on("-d", "Database name", String) do |db|
-          options[:db] = db
-        end
-        opts.on("-s", "Server", String) do |server|
-          options[:server] = server
-        end
-      end.parse!
-
-      db = options[:db]
-      server = options[:server]
+      # OptionParser.new(args) do |opts|
+      #   opts.on("-d", "Database name", String) do |db|
+      #     options[:db] = db
+      #   end
+      #   opts.on("-s", "Server", String) do |server|
+      #     options[:server] = server
+      #   end
+      # end.parse!
+      puts args
+      
+      db = args[:db]
+      server = args[:server]
 
       if db.present? && server.present?
         date_format = Date.today.strftime("%d-%m-%Y")
