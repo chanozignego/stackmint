@@ -124,7 +124,7 @@ configuration.load do
       set :backup, choice.empty? ? backups.last : choice
     end
 
-    task :create_dump, :db, :server do |t, args|
+    task :create_dump do |t, args|
       # options = {}
       
       # OptionParser.new(args) do |opts|
@@ -135,10 +135,9 @@ configuration.load do
       #     options[:server] = server
       #   end
       # end.parse!
-      puts args
       
-      db = args[:db]
-      server = args[:server]
+      db = ENV['db']
+      server = ENV['server']
 
       if db.present? && server.present?
         date_format = Date.today.strftime("%d-%m-%Y")
