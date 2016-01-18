@@ -139,7 +139,7 @@ configuration.load do
       db = ENV['db']
       server = ENV['server']
 
-      if db.present? && server.present?
+      if !db.nil? && !server.nil?
         date_format = Date.today.strftime("%d-%m-%Y")
         dump_path = "/tmp/#{db}_#{date_format}.sql"
         puts "Creating dump at: #{dump_path}..."
