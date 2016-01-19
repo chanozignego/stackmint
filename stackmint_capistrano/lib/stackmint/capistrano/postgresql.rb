@@ -136,8 +136,8 @@ configuration.load do
       #   end
       # end.parse!
       
-      db = ENV['db_dump']
-      server = ENV['server_dump']
+      db_dump = ENV['db_dump']
+      server_dump = ENV['server_dump']
 
       # db_dump = 'contagram_production'
       # server_dump = 'redmint@redmintlabs.com'
