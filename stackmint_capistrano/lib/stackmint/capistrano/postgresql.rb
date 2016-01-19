@@ -141,5 +141,26 @@ configuration.load do
       choice = Capistrano::CLI.ui.ask "Which backup would you like to choose? [#{default_backup}] "
       set :backup, choice.empty? ? backups.last : choice
     end
+
+    desc "Create db dump and download. Params: db_dump, server_dump."
+    task :create_dump do |t, args|
+      
+      db_dump = ENV['db_dump']
+      server_dump = ENV['server_dump']
+
+      if !db_dump.nil? && !server_dump.nil?
+        date_format = Date.today.strftime("%d-%m-%Y")
+        dump_path = "/tmp/#{db_dump}_#{date_format}.sql"
+        puts "Creating dump at: #{dump_path}..."
+        run_as_user "postgres", "pg_dump #{db_dump} > #{dump_path}"
+        puts "Dump created!"
+        puts "Downloading dump to current directory..."
+        system "scp #{server_dump}:#{dump_path} ./"
+        puts "Downloading completed!"
+      else
+        puts "Aborting..."
+        puts "You have to set \'db_dump\' and \'server_dump\' variables"
+      end
+    end
   end
 end
