@@ -136,8 +136,8 @@ configuration.load do
         run_as_user "postgres", "pg_dump #{db_dump} > #{dump_path}"
         puts "Dump created!"
         puts "Downloading dump to current directory..."
-        SSHKit::Backend::Local.new("scp #{server_dump}:#{dump_path} ./").run
-        # run_locally "scp #{server_dump}:#{dump_path} ./"
+        # SSHKit::Backend::Local.new("scp #{server_dump}:#{dump_path} ./").run
+        system "scp #{server_dump}:#{dump_path} ./"
         puts "Downloading completed!"
       else
         puts "Aborting..."
