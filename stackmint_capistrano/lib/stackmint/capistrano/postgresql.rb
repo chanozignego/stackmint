@@ -142,7 +142,7 @@ configuration.load do
       set :backup, choice.empty? ? backups.last : choice
     end
 
-    desc "Create db dump and download. Params: db_dump, server_dump."
+    desc "Create db dump and download, params: db_dump, server_dump."
     task :create_dump do |t, args|
       
       db_dump = ENV['db_dump']
