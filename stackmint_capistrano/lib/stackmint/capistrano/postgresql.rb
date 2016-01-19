@@ -125,22 +125,9 @@ configuration.load do
     end
 
     task :create_dump do |t, args|
-      # options = {}
-      
-      # OptionParser.new(args) do |opts|
-      #   opts.on("-d", "Database name", String) do |db|
-      #     options[:db] = db
-      #   end
-      #   opts.on("-s", "Server", String) do |server|
-      #     options[:server] = server
-      #   end
-      # end.parse!
       
       db_dump = ENV['db_dump']
       server_dump = ENV['server_dump']
-
-      # db_dump = 'contagram_production'
-      # server_dump = 'redmint@redmintlabs.com'
 
       if !db_dump.nil? && !server_dump.nil?
         date_format = Date.today.strftime("%d-%m-%Y")
@@ -149,11 +136,7 @@ configuration.load do
         run_as_user "postgres", "pg_dump #{db_dump} > #{dump_path}"
         puts "Dump created!"
         puts "Downloading dump to current directory..."
-        run_locally do
-          with rails_env: :development do
-            execute "scp #{server_dump}:#{dump_path} ./"
-          end
-        end
+        SSHKit::Backend::Local.new("scp #{server_dump}:#{dump_path} ./").run
         # run_locally "scp #{server_dump}:#{dump_path} ./"
         puts "Downloading completed!"
       else
