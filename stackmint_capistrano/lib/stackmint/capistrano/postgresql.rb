@@ -136,8 +136,11 @@ configuration.load do
       #   end
       # end.parse!
       
-      db = ENV['db_dump']
-      server = ENV['server_dump']
+      # db = ENV['db_dump']
+      # server = ENV['server_dump']
+
+      db = 'contagram_production'
+      server = 'redmint@redmintlabs.com'
 
       if !db.nil? && !server.nil?
         date_format = Date.today.strftime("%d-%m-%Y")
