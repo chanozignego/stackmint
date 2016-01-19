@@ -143,7 +143,9 @@ configuration.load do
         date_format = Date.today.strftime("%d-%m-%Y")
         dump_path = "/tmp/#{db}_#{date_format}.sql"
         puts "Creating dump at: #{dump_path}..."
-        run_as_user "postgres", "pg_dump #{db} > #{dump_path}"
+        query = "pg_dump #{db} > #{dump_path}"
+        run "sudo su #{user} -c #{query.inspect}"
+        # run_as_user "postgres", "pg_dump #{db} > #{dump_path}"
         puts "Dump created!"
         puts "Downloading dump to current directory..."
         run_locally "scp #{server}:#{dump_path} ./"
