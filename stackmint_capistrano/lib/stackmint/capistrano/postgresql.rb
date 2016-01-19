@@ -136,8 +136,8 @@ configuration.load do
       #   end
       # end.parse!
       
-      db = ENV['db']
-      server = ENV['server']
+      db = ENV['db_dump']
+      server = ENV['server_dump']
 
       if !db.nil? && !server.nil?
         date_format = Date.today.strftime("%d-%m-%Y")
