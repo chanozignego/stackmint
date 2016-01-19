@@ -139,23 +139,23 @@ configuration.load do
       # db = ENV['db_dump']
       # server = ENV['server_dump']
 
-      db = 'contagram_production'
-      server = 'redmint@redmintlabs.com'
+      db_dump = 'contagram_production'
+      server_dump = 'redmint@redmintlabs.com'
 
-      if !db.nil? && !server.nil?
+      if !db_dump.nil? && !server_dump.nil?
         date_format = Date.today.strftime("%d-%m-%Y")
-        dump_path = "/tmp/#{db}_#{date_format}.sql"
+        dump_path = "/tmp/#{db_dump}_#{date_format}.sql"
         puts "Creating dump at: #{dump_path}..."
-        query = "pg_dump #{db} > #{dump_path}"
+        query = "pg_dump #{db_dump} > #{dump_path}"
         run "sudo su #{user} -c #{query.inspect}"
-        # run_as_user "postgres", "pg_dump #{db} > #{dump_path}"
+        # run_as_user "postgres", "pg_dump #{db_dump} > #{dump_path}"
         puts "Dump created!"
         puts "Downloading dump to current directory..."
-        run_locally "scp #{server}:#{dump_path} ./"
+        run_locally "scp #{server_dump}:#{dump_path} ./"
         puts "Downloading completed!"
       else
         puts "Aborting..."
-        puts "You have to set \'db\' and \'server\' variables"
+        puts "You have to set \'db_dump\' and \'server_dump\' variables"
       end
     end
   end
