@@ -124,6 +124,7 @@ configuration.load do
       set :backup, choice.empty? ? backups.last : choice
     end
 
+    desc "Create db dump and download. Params: db_dump, server_dump."
     task :create_dump do |t, args|
       
       db_dump = ENV['db_dump']
@@ -136,7 +137,6 @@ configuration.load do
         run_as_user "postgres", "pg_dump #{db_dump} > #{dump_path}"
         puts "Dump created!"
         puts "Downloading dump to current directory..."
-        # SSHKit::Backend::Local.new("scp #{server_dump}:#{dump_path} ./").run
         system "scp #{server_dump}:#{dump_path} ./"
         puts "Downloading completed!"
       else
