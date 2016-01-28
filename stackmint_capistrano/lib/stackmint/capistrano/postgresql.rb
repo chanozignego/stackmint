@@ -30,7 +30,7 @@ configuration.load do
       run "#{sudo} apt-get -y install postgresql libpq-dev"
     end
 
-    desc "Create a database for this application."
+    desc "Create a database for this application. eg: cap pg:init DATABASE_USER=\"user\" DATABASE_PASSWORD=\"db_pass\" DATABASE_NAME=\"db_name\""
     task :init, roles: :db, only: { primary: true } do
       database_user_string = "DATABASE_USER"
       database_password_string = "DATABASE_PASSWORD"
