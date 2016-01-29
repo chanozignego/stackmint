@@ -154,7 +154,7 @@ configuration.load do
         puts "Creating dump at: #{dump_path}..."
         run_as_user "postgres", "pg_dump #{db_dump} > #{dump_path}"
         puts "Dump created!"
-        puts "Downloading dump to current directory..."
+        puts "Downloading dump to current directory with user #{user}..."
         system "scp #{user}@#{server_dump}:#{dump_path} ./"
         puts "Downloading completed!"
       else
