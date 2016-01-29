@@ -7,6 +7,8 @@ configuration = Capistrano::Configuration.respond_to?(:instance) ?
 
 configuration.load do
 
+  _cset(:user) { USERNAME }
+
   _cset(:config_path) { abort "[Error] posgtresql recipes need `config_path` to find the database.yml file." }
   _cset(:db_backup_path) { abort "[Error] posgtresql recipes need `db_backup_path` to execute backups." }
 
@@ -155,7 +157,7 @@ configuration.load do
         run_as_user "postgres", "pg_dump #{db_dump} > #{dump_path}"
         puts "Dump created!"
         puts "Downloading dump to current directory..."
-        system "scp #{server_dump}:#{dump_path} ./"
+        system "scp #{USERNAME}@#{server_dump}:#{dump_path} ./"
         puts "Downloading completed!"
       else
         puts "Aborting..."
