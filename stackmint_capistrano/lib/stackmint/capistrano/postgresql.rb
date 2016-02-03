@@ -151,11 +151,13 @@ configuration.load do
       if !db_dump.nil? && !server_dump.nil?
         date_format = Date.today.strftime("%d-%m-%Y")
         dump_name = "#{db_dump}_#{date_format}.sql"
-        dump_path = "/tmp/dump_name"
+        dump_path = "/tmp/#{dump_name}"
         puts "Creating dump at: #{dump_path}..."
         run_as_user "postgres", "pg_dump #{db_dump} > #{dump_path}"
-        run "tar -czfv #{dump_path.gsub('.sql', '.tar.gz')} #{dump_path}"
         puts "Dump created!"
+        puts "Compressing dump!"
+        run "tar -czfv #{dump_path.gsub('.sql', '.tar.gz')} #{dump_path}"
+        puts "Dump compressed!"
         puts "Downloading dump to current directory with user #{user}..."
         system "scp #{user}@#{server_dump}:#{dump_path.gsub('.sql', '.tar.gz')} ./"
         puts "Downloading completed!"
