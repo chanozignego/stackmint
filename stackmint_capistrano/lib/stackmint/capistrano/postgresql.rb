@@ -161,8 +161,8 @@ configuration.load do
         puts "Downloading dump to current directory with user #{user}..."
         system "scp #{user}@#{server_dump}:#{dump_path.gsub('.sql', '.tar.gz')} ./"
         puts "Downloading completed!"
-        run "rm #{dump_path.gsub('.sql', '.tar.gz')}"
-        run "rm #{dump_path}"
+        run "sudo rm #{dump_path.gsub('.sql', '.tar.gz')}"
+        run "sudo rm #{dump_path}"
       else
         puts "Aborting..."
         puts "You have to set \'db_dump\' and \'server_dump\' variables"
