@@ -156,7 +156,7 @@ configuration.load do
         run_as_user "postgres", "pg_dump #{db_dump} > #{dump_path}"
         puts "Dump created!"
         puts "Compressing dump!"
-        run "tar -czfv #{dump_path.gsub('.sql', '.tar.gz')} #{dump_path}"
+        run "tar -cvzf #{dump_path.gsub('.sql', '.tar.gz')} #{dump_path}"
         puts "Dump compressed!"
         puts "Downloading dump to current directory with user #{user}..."
         system "scp #{user}@#{server_dump}:#{dump_path.gsub('.sql', '.tar.gz')} ./"
