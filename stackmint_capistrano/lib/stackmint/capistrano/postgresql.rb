@@ -144,7 +144,7 @@ configuration.load do
 
     desc "Create db dump and download, params: db_dump, server_dump."
     task :create_dump do |t, args|
-      puts "SERVER NAME: #{server.hostname}"
+      puts "SERVER NAME: #{capture("echo $CAPISTRANO:HOST$").strip}"
       
       db_dump = ENV['db_dump']
       server_dump = ENV['server_dump']
