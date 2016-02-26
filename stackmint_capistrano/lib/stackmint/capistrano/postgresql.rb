@@ -27,7 +27,7 @@ configuration.load do
   namespace :pg do
     desc "Install the latest stable release of PostgreSQL."
     task :install, roles: :db, only: {primary: true} do
-      run "#{sudo} apt-get -y install postgresql libpq-dev"
+      run "#{sudo} apt-get -y install postgresql libpq-dev --force-yes"
     end
 
     desc "Create a database for this application. eg: cap pg:init DATABASE_USER=\"user\" DATABASE_PASSWORD=\"db_pass\" DATABASE_NAME=\"db_name\""
