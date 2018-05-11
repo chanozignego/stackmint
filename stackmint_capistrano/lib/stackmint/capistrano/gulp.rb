@@ -9,7 +9,24 @@ configuration.load do
     desc "Start gulp apps"
     task :restart do
       gulp_apps.each do |platform|
-        run "cd #{platform} && forever start node_modules/gulp/bin/gulp.js #{environment}"
+        gulp_task == "production" ? "prod" : "staging"
+        run "cd #{platform} && forever start node_modules/gulp/bin/gulp.js #{gulp_task}"
+      end
+    end
+
+    desc "Deploy gulp apps"
+    namespace :deploy do
+      gulp_apps.each do |platform|
+        task platform.to_sym do
+          run "cd #{platform} && git stash"
+          run "cd #{platform} && git pull origin #{branch}"
+          gulp_task = (environment == "production") ? "prod" : "staging"
+          begin
+            run "cd #{platform} && gulp #{gulp_task}"
+          rescue e
+            puts "Deploy #{platform} [OK]"
+          end
+        end
       end
     end
   end
