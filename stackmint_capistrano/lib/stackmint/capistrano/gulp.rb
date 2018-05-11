@@ -9,7 +9,7 @@ configuration.load do
     desc "Start gulp apps"
     task :restart do
       gulp_apps.each do |platform|
-        gulp_task == "production" ? "prod" : "staging"
+        gulp_task = (environment == "production") ? "prod" : "staging"
         run "cd #{platform} && forever start node_modules/gulp/bin/gulp.js #{gulp_task}"
       end
     end
