@@ -21,7 +21,7 @@ configuration.load do
       gulp_task = (environment == "production") ? "prod" : "staging"
       begin
         run "cd #{platform} && gulp #{gulp_task}"
-      rescue e
+      rescue Exception => e
         puts "Deploy #{platform} [OK]"
       end
     end
