@@ -16,5 +16,12 @@ configuration.load do
     task :restart do
       run "#{sudo} reboot"
     end
+
+    desc "Clean all log files"
+    task :clean_logs do
+      log_files.each do |logfile|
+        run "cd /home/#{application}/app/log && truncate --size 0 #{logfile}"
+      end
+    end
   end
 end
