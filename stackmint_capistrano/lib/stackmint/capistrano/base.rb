@@ -11,5 +11,10 @@ configuration.load do
       run "#{sudo} apt-get -y update"
       run "#{sudo} apt-get -y install python-software-properties git-core vim curl wget"
     end
+
+    desc "Restart server"
+    task :restart do
+      run "#{sudo} reboot"
+    end
   end
 end
