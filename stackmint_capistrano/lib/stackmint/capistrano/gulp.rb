@@ -15,18 +15,14 @@ configuration.load do
     end
 
     desc "Deploy gulp apps"
-    namespace :deploy do
-      gulp_apps.each do |platform|
-        task platform.to_sym do
-          run "cd #{platform} && git stash"
-          run "cd #{platform} && git pull origin #{branch}"
-          gulp_task = (environment == "production") ? "prod" : "staging"
-          begin
-            run "cd #{platform} && gulp #{gulp_task}"
-          rescue e
-            puts "Deploy #{platform} [OK]"
-          end
-        end
+    task :deploy do
+      run "cd #{platform} && git stash"
+      run "cd #{platform} && git pull origin #{branch}"
+      gulp_task = (environment == "production") ? "prod" : "staging"
+      begin
+        run "cd #{platform} && gulp #{gulp_task}"
+      rescue e
+        puts "Deploy #{platform} [OK]"
       end
     end
   end

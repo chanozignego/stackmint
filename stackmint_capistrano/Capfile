@@ -17,6 +17,7 @@ require 'stackmint/capistrano/bundler'
 require 'stackmint/capistrano/redis'
 require 'stackmint/capistrano/nodejs'
 require 'stackmint/capistrano/postgresql'
+require 'stackmint/capistrano/gulp'
 
 ### SECTION :scm
 # Use Git as Version Control System
@@ -63,12 +64,18 @@ task :local do
   set :user, 'vagrant'
   set :application, "#{application_name}"
   set :domain, "localhost:2222"
+  set :environment, "local"
+  set :gulp_apps, []
+  set :log_files, []
   server domain, :web, :app, :db, :primary => true
 end
 
 task :new_production do
   set :application, application_name
   set :domain, "www.comovamireclamo.com"
+  set :environment, "production"
+  set :gulp_apps, []
+  set :log_files, []
   server "#{domain}:19018", :web, :app, :db, :primary => true
 end
 
