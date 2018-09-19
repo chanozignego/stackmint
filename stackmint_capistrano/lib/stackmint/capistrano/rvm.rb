@@ -15,7 +15,7 @@ configuration.load do
     end
 
     task :install_ruby, roles: :app do
-      run_as_user "root", "rvm install --default 2.2.4"
+      run_as_user "root", "rvm install --default 2.2.2"
     end
 
     task :add_user_to_rvm, roles: :app do
