@@ -9,7 +9,8 @@ configuration.load do
     desc "Install everything onto the server"
     task :install do
       run "#{sudo} apt-get -y update"
-      run "#{sudo} apt-get -y install python-software-properties git-core vim curl wget"
+      # run "#{sudo} apt-get -y install python-software-properties git-core vim curl wget"
+      run "#{sudo} apt-get -y install software-properties-common git-core vim curl wget"
     end
 
     desc "Restart server"
