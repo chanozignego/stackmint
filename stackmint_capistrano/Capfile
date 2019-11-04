@@ -54,6 +54,7 @@ after "host:install",
   "pg:install"
 
 after "bootstrap",
+  "recap:set_env",
   "rvm:add_app_to_rvm"
 
 after "deploy:setup",

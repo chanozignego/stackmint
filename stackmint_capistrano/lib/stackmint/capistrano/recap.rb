@@ -15,5 +15,5 @@ configuration.load do
     end
   end
 
-  after "bootstrap", "recap:set_env"
+  #after "bootstrap", "recap:set_env"
 end
